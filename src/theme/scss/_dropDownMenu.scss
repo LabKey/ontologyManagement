@@ -1,0 +1,143 @@
+/*
+ *Copyright (c) 2018 Nestec Ltd. 
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+ /**
+ * @author rdpintopra
+ * Date: Oct 04,2018
+ */
+ 
+.dropbtn {
+    background-color:transparent;
+    height: 50px;
+    border: none;
+}
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 250px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    text-align: left;
+    &.inactive{
+        display: none;
+    }
+}
+
+.dropdown-content div ul{
+    padding: 0;
+
+}
+
+.parent:hover > ul {
+    display: inline-block;
+    position:absolute;
+    padding: 0;
+
+}
+
+.parent:hover {
+    background-color: #95B4CA;
+}
+
+.parent a{
+    text-decoration: none;
+    white-space: normal;
+}
+
+.parent{
+    list-style-type: none;
+    padding: 5px;
+    text-align: left;
+}
+.parent i{
+    cursor:pointer;
+}
+
+.child {
+    display: none;
+    list-style-type: none;
+    float: left;
+    background-color: #E4EFF7;
+    min-width: 500px;
+  }
+
+.child li {
+    white-space: normal;
+    word-wrap: break-word;
+    text-align: left;
+}
+.child li:hover {
+    background-color: unset;
+}
+.child b{
+    text-align: center;
+}
+
+.desciptionElement{
+    padding-top: 10px;
+} 
+
+.ReactTable .rt-thead .rt-resizable-header-content {
+    overflow: visible;
+    text-overflow: ellipsis;
+    left:100%;
+}
+
+.ReactTable .rt-thead .rt-resizable-header:nth-last-child(-n+3)  {
+    overflow: visible;
+}
+
+.ReactTable .rt-thead .rt-resizable-header:nth-last-child(-n+3) .rt-resizable-header-content .dropdown .dropdown-content {
+    overflow: visible;
+    right:0;
+}
+.rt-resizable-header:nth-last-child(-n+3) .child {
+    overflow: visible;
+    right:100%;
+    left:auto;
+}
+.rt-resizable-header:first-child .child {
+    overflow: visible;
+    right:auto;
+    left:100%;
+}
+.ReactTable .rt-thead .rt-resizable-header:first-child .rt-resizable-header-content .dropdown .dropdown-content {
+    overflow: visible;
+    right:auto;
+    left:0;
+}
+.ReactTable .rt-thead .rt-resizable-header:nth-child(2) .rt-resizable-header-content .dropdown .dropdown-content {
+    overflow: visible;
+    right:0;
+    left:auto;
+}
+.rt-resizable-header .child {
+    overflow: visible;
+    left:100%;
+}
+.rt-resizable-header {
+    background-color: #f1f1f1;
+}
+.dropdown-content .divider{
+    height:1px;
+}

@@ -1,0 +1,3 @@
+# direct external dependencies for project :server:optionalModules:ontologymanagement
+jena-core-3.6.0.jar
+jena-arq-3.6.0.jar

@@ -1,0 +1,13 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.apache.jena/jena-core
+    external group: 'org.apache.jena', name: 'jena-core', version: '3.6.0'
+    // https://mvnrepository.com/artifact/org.apache.jena/jena-arq
+    external group: 'org.apache.jena', name: 'jena-arq', version: '3.6.0'
+
+}

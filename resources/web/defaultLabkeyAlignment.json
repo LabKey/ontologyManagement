@@ -1,0 +1,10 @@
+{
+  "http://www.w3.org/2004/02/skos/core#altLabel":"labkey:altLabel",
+  "http://www.w3.org/2004/02/skos/core#hiddenLabel":"labkey:altLabel",
+  "http://qudt.org/schema/qudt#abbreviation":"labkey:label",
+  "http://www.w3.org/2000/01/rdf-schema#label":"labkey:label",
+  "http://www.w3.org/2004/02/skos/core#prefLabel":"labkey:label",
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf":"labkey:hasParent",
+  "http://purl.obolibrary.org/obo/IAO_0000115":"labkey:description",
+  "http://www.w3.org/2000/01/rdf-schema#":"labkey:description"
+}
