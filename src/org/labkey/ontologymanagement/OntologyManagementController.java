@@ -16,11 +16,12 @@
 
 package org.labkey.ontologymanagement;
 
-import org.labkey.api.action.ApiAction;
 import org.labkey.api.action.ApiSimpleResponse;
 import org.labkey.api.action.FormViewAction;
 import org.labkey.api.action.Marshal;
 import org.labkey.api.action.Marshaller;
+import org.labkey.api.action.MutatingApiAction;
+import org.labkey.api.action.ReadOnlyApiAction;
 import org.labkey.api.action.SimpleViewAction;
 import org.labkey.api.action.SpringActionController;
 import org.labkey.api.data.ActionButton;
@@ -40,8 +41,10 @@ import org.labkey.api.data.Table;
 import org.labkey.api.data.TableInfo;
 import org.labkey.api.data.TableResultSet;
 import org.labkey.api.exceptions.OptimisticConflictException;
+import org.labkey.api.pipeline.PipelineService;
 import org.labkey.api.query.DefaultSchema;
 import org.labkey.api.query.FieldKey;
+import org.labkey.api.query.QueryAction;
 import org.labkey.api.query.QuerySchema;
 import org.labkey.api.query.UserSchema;
 import org.labkey.api.security.RequiresPermission;
@@ -61,19 +64,16 @@ import org.labkey.api.view.RedirectException;
 import org.labkey.api.view.UpdateView;
 import org.labkey.api.view.ViewContext;
 import org.labkey.api.view.template.PageConfig;
+import org.labkey.ontologymanagement.job.OntologyImportJob;
 import org.labkey.ontologymanagement.model.Ontology;
 import org.labkey.ontologymanagement.model.OntologyData;
 import org.labkey.ontologymanagement.model.OntologyManagementManager;
 import org.labkey.ontologymanagement.model.OntologyMapping;
 import org.labkey.ontologymanagement.model.SearchTermClass;
-import org.labkey.ontologymanagement.job.OntologyImportJob;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.servlet.ModelAndView;
-import org.labkey.api.pipeline.PipelineService;
-import org.labkey.api.query.QueryAction;
-
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -111,12 +111,12 @@ public class OntologyManagementController extends SpringActionController
     * API Actions
     ********************/
 
-    // Insert the dataset annotation (mapping bettwen the dataset and the ontology)
+    // Insert the dataset annotation (mapping between the dataset and the ontology)
     @RequiresPermission(InsertPermission.class)
-    public class InsertOntoMapping extends ApiAction<OntologyMapping>
+    public class InsertOntoMapping extends MutatingApiAction<OntologyMapping>
     {
         @Override
-        public Object execute(OntologyMapping form, BindException errors) throws Exception
+        public Object execute(OntologyMapping form, BindException errors)
         {
             DbScope scope = DbScope.getLabKeyScope();
             form.setContainer(getContainer().getId());
@@ -133,10 +133,10 @@ public class OntologyManagementController extends SpringActionController
 
     // Insert a new concept for a given folder
     @RequiresPermission(InsertPermission.class)
-    public class InsertNewConcept extends ApiAction<OntologyData>
+    public class InsertNewConcept extends MutatingApiAction<OntologyData>
     {
         @Override
-        public Object execute(OntologyData form, BindException errors) throws Exception
+        public Object execute(OntologyData form, BindException errors)
         {
 
             DbScope scope = DbScope.getLabKeyScope();
@@ -178,25 +178,24 @@ public class OntologyManagementController extends SpringActionController
 
     // Get all dataset annotations
     @RequiresPermission(ReadPermission.class)
-    public class getOntologyAnnotations extends ApiAction<OntologyMapping>
+    public class getOntologyAnnotations extends MutatingApiAction<OntologyMapping>
     {
         @Override
         public Object execute(OntologyMapping form, BindException errors) throws Exception
         {
-            DbScope scope = DbScope.getLabKeyScope();
-            return  OntologyManagementManager.getInstance().getOntologyAnnotations(getContainer(), form.getSchemaname(),form.getQueryname());
+            return OntologyManagementManager.getInstance().getOntologyAnnotations(getContainer(), form.getSchemaname(), form.getQueryname());
         }
     }
 
     // Get the dataset annotations for a specific column (mapping bettwen the dataset and the ontology)
     @RequiresPermission(ReadPermission.class)
-    public class getOntoMapping extends ApiAction<OntologyMapping>
+    public class getOntoMapping extends ReadOnlyApiAction<OntologyMapping>
     {
         @Override
-        public Object execute(OntologyMapping form, BindException errors) throws Exception
+        public Object execute(OntologyMapping form, BindException errors)
         {
             DbScope scope = DbScope.getLabKeyScope();
-            List<Map> ret = new ArrayList();
+            List<Map> ret = new ArrayList<>();
             try (DbScope.Transaction tx = scope.ensureTransaction()){
                 SQLFragment select = new SQLFragment("SELECT * FROM ontologymanagement.ontologymapping WHERE container = ? and schemaname = ? and queryname = ? and fieldname = ?",
                         getContainer(),form.getSchemaname(),form.getQueryname(),form.getFieldname());
@@ -218,10 +217,10 @@ public class OntologyManagementController extends SpringActionController
     // Delete dataset annotation (mapping bettwen the dataset and the ontology)
 
     @RequiresPermission(DeletePermission.class)
-    public class DeleteOntoMapping extends ApiAction<OntologyMapping>
+    public class DeleteOntoMapping extends MutatingApiAction<OntologyMapping>
     {
         @Override
-        public Object execute(OntologyMapping form, BindException errors) throws Exception
+        public Object execute(OntologyMapping form, BindException errors)
         {
             DbScope scope = DbScope.getLabKeyScope();
             form.setContainer(getContainer().getId());
@@ -241,10 +240,10 @@ public class OntologyManagementController extends SpringActionController
     // Get Available ontologies for a specific container (To be used in the future)
 
     @RequiresPermission(ReadPermission.class)
-    public class GetAvailableOntologies extends ApiAction<Object>
+    public class GetAvailableOntologies extends ReadOnlyApiAction<Object>
     {
         @Override
-        public Object execute(Object o, BindException errors) throws Exception
+        public Object execute(Object o, BindException errors)
         {
             GridView gridView = new GridView(getDataRegion(), errors);
             ApiSimpleResponse response = new ApiSimpleResponse();
@@ -266,10 +265,10 @@ public class OntologyManagementController extends SpringActionController
     // Get ontology concept information
 
     @RequiresPermission(ReadPermission.class)
-    public class getConceptInfo extends ApiAction<OntologyData>
+    public class getConceptInfo extends ReadOnlyApiAction<OntologyData>
     {
         @Override
-        public Object execute(OntologyData form, BindException errors) throws Exception
+        public Object execute(OntologyData form, BindException errors)
         {
             DbScope scope = DbScope.getLabKeyScope();
 
@@ -279,10 +278,10 @@ public class OntologyManagementController extends SpringActionController
 
     // Search for a specific term in the ontologies from the current container, parent container and Shared container.
     @RequiresPermission(ReadPermission.class)
-    public class SearchTerm extends ApiAction<SearchTermClass>
+    public class SearchTerm extends ReadOnlyApiAction<SearchTermClass>
     {
         @Override
-        public Object execute(SearchTermClass form, BindException errors) throws Exception
+        public Object execute(SearchTermClass form, BindException errors)
         {
 
             DbScope scope = DbScope.getLabKeyScope();
@@ -307,7 +306,7 @@ public class OntologyManagementController extends SpringActionController
             TableResultSet r = new SqlSelector(scope, select).getResultSet();
 
             // For each subject keep the label of the highest match
-            Map<String,Map<String, Object>> ret  = new HashMap();
+            Map<String, Map<String, Object>> ret  = new HashMap<>();
             for (Map<String, Object> row : r)
             {
                 String row_subject = row.get("subject").toString();
@@ -324,7 +323,7 @@ public class OntologyManagementController extends SpringActionController
                     ret.put(row_subject,row);
                 }
             }
-            return new ArrayList(ret.values());
+            return new ArrayList<>(ret.values());
         }
     }
 
@@ -337,7 +336,7 @@ public class OntologyManagementController extends SpringActionController
     public class ListOntologies extends SimpleViewAction
     {
         @Override
-        public ModelAndView getView(Object o, BindException errors) throws Exception
+        public ModelAndView getView(Object o, BindException errors)
         {
             GridView gridView = new GridView(getDataRegion(), errors);
             gridView.setSort(new Sort("Endpoint"));
@@ -708,6 +707,7 @@ public class OntologyManagementController extends SpringActionController
             super(Ontology.class, OntologyManagementSchema.getInstance().getTableInfoOntologyData());
         }
     }
+
     private void writeImportStatus(String status, Integer rowid){
         DbScope scope = DbScope.getLabKeyScope();
         try (DbScope.Transaction tx = scope.ensureTransaction()){
@@ -726,7 +726,7 @@ public class OntologyManagementController extends SpringActionController
         SQLFragment select = new SQLFragment("SELECT labkeyproperty,property,object FROM ontologymanagement.OntologyData WHERE subject= ? and container in (?,?,?) ",
                 subject,getContainer(),ContainerManager.getSharedContainer(), getContainer().getParent());
         TableResultSet r = new SqlSelector(scope, select).getResultSet();
-        List<Map> ret = new ArrayList();
+        List<Map> ret = new ArrayList<>();
         // Each result row
         for (Map<String, Object> row : r)
         {

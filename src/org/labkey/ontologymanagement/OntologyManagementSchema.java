@@ -71,6 +71,4 @@ import org.labkey.api.data.dialect.SqlDialect;
     {
         return getSchema().getTable("ontologymapping");
     }
-
-
 }
