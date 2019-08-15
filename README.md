@@ -1,22 +1,22 @@
 
-Ontology Management Module for Labkey.
+Ontology Management Module for LabKey.
 ======
 
 This module provides tools to:
- - Align external ontologies with Labkey concepts.
- - Import relevant information from external ontologies to Labkey.
- - Semantically annotate Labkey datasets.
+ - Align external ontologies with LabKey concepts.
+ - Import relevant information from external ontologies to Labey.
+ - Semantically annotate LabKey datasets.
 
 
 ## Installation Instructions
 
 ### Requirements
-* Labkey version 18.2 +
+* LabKey version 18.2 +
 * PostgreSQL Database.
 * Tested in Linux environment.
-* [Labkey Development Machine](https://www.labkey.org/Documentation/wiki-page.view?name=devMachine) (to build).
+* [LabKey Development Machine](https://www.labkey.org/Documentation/wiki-page.view?name=devMachine) (to build).
 
-### Build and deployment in development [(See: Build Labkey from Source)](https://www.labkey.org/Documentation/wiki-page.view?name=buildLabKey)
+### Build and deployment in development [(See: Build LabKey from Source)](https://www.labkey.org/Documentation/wiki-page.view?name=buildLabKey)
 
 1. Download the source code to `labkey/server/optionalModules/ontologymanagement`
 
@@ -30,9 +30,9 @@ This module provides tools to:
     gradlew :server:optionalmodules:ontologymanagement:deployModule
     ```
 ### Deployment in production
-1. Compile module in production mode [(See: Build Labkey from Source)](https://www.labkey.org/Documentation/wiki-page.view?name=buildLabKey)
+1. Compile module in production mode [(See: Build LabKey from Source)](https://www.labkey.org/Documentation/wiki-page.view?name=buildLabKey)
 2. Copy (`ontologymanagement-18.3-SNAPSHOT.module`) to `labkey/externalModules`
-3. Restart Labkey. 
+3. Restart LabKey. 
  
 ### Configuration
 
@@ -49,11 +49,11 @@ This module provides tools to:
 ## Basic Example
 This example demonstrates a basic import of all available concepts from an ontology that have their labels described according the W3C recommendation:`rdfs:label`.
 
-For this example, we will use the [Food Ontology](http://foodontology.github.io/foodon/). The ontology file `foodon-merged.owl` can be found in the FoodOntology [git repository](https://github.com/FoodOntology/foodon) under `/src/ontology`. Please download the ontology file and save it in the Labkey local machine (e.g. `/ontologies/foodon-merged.owl`).
+For this example, we will use the [Food Ontology](http://foodontology.github.io/foodon/). The ontology file `foodon-merged.owl` can be found in the FoodOntology [git repository](https://github.com/FoodOntology/foodon) under `/src/ontology`. Please download the ontology file and save it in the LabKey local machine (e.g. `/ontologies/foodon-merged.owl`).
 
-The ontologies are managed by container (i.e. Project/Study). If you want to specify a global ontology to be use across multiple projects, please use the default Labkey Shared folder.
+The ontologies are managed by container (i.e. Project/Study). If you want to specify a global ontology to be use across multiple projects, please use the default LabKey Shared folder.
 
-### 1. Add Ontology in Labkey
+### 1. Add Ontology in LabKey
 
 Access the Ontology Management Interface by clicking on the `Manage Ontologies` button available in the Ontology Management Web Part.
 
@@ -72,21 +72,21 @@ The display form allows configuring the Ontology properties. To keep this exampl
 | Query | Sparql Query to be executed | (default)
 | Ontologyid | Ontology identifier without spaces. | FoodOnt
 
- At this point, any data from the ontology is import to Labkey.
+ At this point, any data from the ontology is import to LabKey.
 
  ### 2. Import Ontology
-When the ontology is add to Labkey and correctly configured, the relevant data from that ontology can be load to Labkey. To import the data please select the ontology and hit the button `Import Ontology`.
+When the ontology is add to LabKey and correctly configured, the relevant data from that ontology can be load to LabKey. To import the data please select the ontology and hit the button `Import Ontology`.
 
 ![Import Ontology Button](media/ImportOntology.JPG)
 
-A pipeline will be launch and the import status will change to `Importing`. The pipeline can be managed in the [Labkey pipeline interface](https://www.labkey.org/Documentation/wiki-page.view?name=pipeline) if you are admin.
+A pipeline will be launch and the import status will change to `Importing`. The pipeline can be managed in the [LabKey pipeline interface](https://www.labkey.org/Documentation/wiki-page.view?name=pipeline) if you are admin.
 
-For this example, the import will take some minutes (depending the Labkey machine performance). Once done, the Import Status will change to `Complete`.
+For this example, the import will take some minutes (depending the LabKey machine performance). Once done, the Import Status will change to `Complete`.
 
 A data grid with the imported data is accessible by clicking in the respective `Ontologyid` in the Ontology Management Interface.
 
 ### 3. Dataset Annotation
-Once the ontology data is import to Labkey, the study datasets can be annotate with the ontology concepts.
+Once the ontology data is import to LabKey, the study datasets can be annotate with the ontology concepts.
 The Ontology Management Webpart provides an interface to perform the annotation. For this example please consider the following food questioner dataset ["media/FoodExampleDataset.csv"](media/FoodExampleDataset.csv) as example.
 
 After create the `Food Example` dataset with the data in ["media/FoodExampleDataset.csv"](media/FoodExampleDataset.csv), the dataset will appear in the Ontology Management Webpart.
@@ -111,12 +111,12 @@ This module also provides a concept overview across all projects that the user h
 
 ## Example with advanced configuration
 
-This example demonstrates a more advance dataset annotation where an ontology is directly import from a SPARQL endpoint and the import process requires extra alignment between the ontology and the Labkey concepts.    
+This example demonstrates a more advance dataset annotation where an ontology is directly import from a SPARQL endpoint and the import process requires extra alignment between the ontology and the LabKey concepts.    
 
 For this example, we will use the [National Cancer Institute Thesaurus](https://ncit.nci.nih.gov). The ontology can be found in the NCI Thesaurus [repository](https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/). This is a relatively large ontology and for better performance is advisable to load it on a triple-store accessible through a SPARQL endpoint.
 
-### 1. Add Ontology in Labkey
-The ontology is add into Labkey, similarly to the previous example. In this example, two main differences exist: (1) The endpoint has a HTTP address for the SPARQL endpoint instead of a local address for an OWL file and (2) the SPARQL query is a custom query to extract only the relevant information from the Ontology. Consider the following configuration:
+### 1. Add Ontology in LabKey
+The ontology is add into LabKey, similarly to the previous example. In this example, two main differences exist: (1) The endpoint has a HTTP address for the SPARQL endpoint instead of a local address for an OWL file and (2) the SPARQL query is a custom query to extract only the relevant information from the Ontology. Consider the following configuration:
 
 | Parameter | Description | This Example|
 |-----------|-------------|-------------| 
@@ -146,16 +146,16 @@ In this example the SPARQL query will get all concepts of the type `owl:Class`. 
 * `nci:P325` - NCI specific property to describe the Chemical_Formula.
 * `nci:P90` - NCI specific property to describe a synonym for the concept.
 
-### 2. Edit Labkey Alignment
+### 2. Edit LabKey Alignment
 
-To integrate concepts describe according different ontologies, an ontology alignment table is available. The table aims to align the external ontologies with the Labkey concepts.
+To integrate concepts describe according different ontologies, an ontology alignment table is available. The table aims to align the external ontologies with the LabKey concepts.
 
 To access the Alignment table, please select an existing ontology and click on `Edit Alignment` button.
 
 ![Edit Alignment](media/EditAlignment.JPG)
 
 
-In this moment, some Labkey concepts are define in this module:
+In this moment, some LabKey concepts are define in this module:
 
 | Concept | Description | Usage |
 |-----------|-------------|-------------|
@@ -168,7 +168,7 @@ In this moment, some Labkey concepts are define in this module:
 When create the ontology, some default alignments are automatically setup. The default alignments are defined in the file `resources/web/defaultLabkeyAlignment.json`. We expect that the default alignments will improve in the future by community contributions. The default alignments at this point are:
 
 
-| OntologyProperty | Labkeyproperty | 
+| OntologyProperty | LabKeyproperty | 
 |-----------|-------------|
 |rdfs:label|labkey:label|
 |rdfs:subClassOf|labkey:hasParent|
@@ -179,7 +179,7 @@ When create the ontology, some default alignments are automatically setup. The d
 Those alignments provide the basic to import the concepts and their labels from the ontologies that adopt one of the two W3C recommendations: Resource Description Framework Schema ([RDFS](https://www.w3.org/TR/rdf-schema/)) or the Simple Knowledge Organization System ([SKOS](https://www.w3.org/TR/skos-reference/)). 
 
 ### 3. Import Ontology
-Once the ontology is add with success to Labkey and correctly aligned with the Labkey concepts, the import is perform by clicking in the "import ontology" button as in the previous example.
+Once the ontology is add with success to LabKey and correctly aligned with the LabKey concepts, the import is perform by clicking in the "import ontology" button as in the previous example.
 The Background import pipeline can take several minutes depending the triplestore performance.
 
 ### 4. Dataset Annotation
@@ -188,4 +188,5 @@ Similar to the previous example, the annotation is perform using the interface p
 
 When the ontology import is complete, a large number of results is display when click on the field. This is due to the generic name of the minerals and the high specificity of the ontology.
 While in the previous case, the annotation was straightforward, in this example the user must carefully select which ontology concept fits better.
+
 
