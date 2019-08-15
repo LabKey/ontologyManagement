@@ -4,7 +4,7 @@ Ontology Management Module for LabKey.
 
 This module provides tools to:
  - Align external ontologies with LabKey concepts.
- - Import relevant information from external ontologies to Labey.
+ - Import relevant information from external ontologies to LabKey.
  - Semantically annotate LabKey datasets.
 
 
